@@ -8,7 +8,7 @@ Visit the live site: [https://shopifyyyy.netlify.app/](https://shopifyyyy.netlif
 
 ## Repository
 
-Source code: [https://github.com/kaushikvk2607/ElectroMart](https://github.com/kaushikvk2607/ElectroMart)
+Source code: [https://github.com/kaushikvk2607/ElectroMart](https://github.com/kaushikvk2607/Shopify-Mart)
 
 ## Getting Started
 
