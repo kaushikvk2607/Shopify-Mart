@@ -1,4 +1,4 @@
-# ElectroMart
+# Shopify-Mart
 
 This is an e-commerce web application built with [Next.js](https://nextjs.org/) and [Sanity.io](https://www.sanity.io/) for product/content management. It features Stripe payments, a responsive UI, and modern React features.
 
