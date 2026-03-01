@@ -1,12 +1,21 @@
 import { useState } from "react";
+import { trackEvent } from "../lib/mixpanel";
 
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
 
+  const toggleChat = () => {
+    const newState = !isOpen;
+    setIsOpen(newState);
+    trackEvent(newState ? 'Chatbot Opened' : 'Chatbot Closed');
+  };
+
   const sendMessage = async () => {
     if (!input) return;
+
+    trackEvent('Chatbot Message Sent', { message: input });
 
     const res = await fetch("/api/chat", {
       method: "POST",
@@ -21,6 +30,11 @@ export default function Chatbot() {
       { user: input, bot: data.response || "No response" }
     ]);
 
+    trackEvent('Chatbot Response Received', {
+      user_message: input,
+      bot_response: data.response || "No response"
+    });
+
     setInput("");
   };
 
@@ -28,7 +42,7 @@ export default function Chatbot() {
     <>
       {/* Floating Button */}
       <div
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggleChat}
         style={{
           position: "fixed",
           bottom: "20px",
@@ -82,7 +96,10 @@ export default function Chatbot() {
             <span>Medical Assistant</span>
             <span
               style={{ cursor: "pointer" }}
-              onClick={() => setIsOpen(false)}
+              onClick={() => {
+                setIsOpen(false);
+                trackEvent('Chatbot Closed');
+              }}
             >
               ✖
             </span>
@@ -110,6 +127,7 @@ export default function Chatbot() {
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
               style={{
                 flex: 1,
                 padding: "6px",

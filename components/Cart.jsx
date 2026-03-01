@@ -7,12 +7,18 @@ import toast from 'react-hot-toast';
 import { useStateContext } from '../context/StateContext';
 import { urlFor } from '../lib/client';
 import getStripe from '../lib/getStripe';
+import { trackEvent } from '../lib/mixpanel';
 
 const Cart = () => {
   const cartRef = useRef();
   const { totalPrice, totalQuantities, cartItems, setShowCart, toggleCartItemQuanitity, onRemove } = useStateContext();
 
   const handleCheckout = async () => {
+    trackEvent('Checkout Initiated', {
+      total_price: totalPrice,
+      total_items: totalQuantities,
+    });
+
     const stripe = await getStripe();
 
     const response = await fetch('/api/stripe', {
@@ -21,9 +27,9 @@ const Cart = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(cartItems),
-    }); 
-    if(response.statusCode === 500) return;
-    
+    });
+    if (response.statusCode === 500) return;
+
     const data = await response.json();
 
     toast.loading('Redirecting...');
@@ -34,32 +40,32 @@ const Cart = () => {
 
   return (
     <div className="cart-wrapper" ref={cartRef}>
-    <div className="cart-container">
-      <button
-      type="button"
-      className="cart-heading"
-      onClick={() => setShowCart(false)}>
-        <AiOutlineLeft />
-        <span className="heading">Your Cart</span>
-        <span className="cart-num-items">({totalQuantities} items)</span>
-      </button>
+      <div className="cart-container">
+        <button
+          type="button"
+          className="cart-heading"
+          onClick={() => setShowCart(false)}>
+          <AiOutlineLeft />
+          <span className="heading">Your Cart</span>
+          <span className="cart-num-items">({totalQuantities} items)</span>
+        </button>
 
-      {cartItems.length < 1 && (
-        <div className="empty-cart">
-          <AiOutlineShopping size={150} />
-          <h3>Your shopping bag is empty</h3>
-          <Link href="/">
-            <button
-              type="button"
-              onClick={() => setShowCart(false)}
-              className="btn"
-            >
-              Continue Shopping
-            </button>
-          </Link>
-        </div>
-      )}
-       <div className="product-container">
+        {cartItems.length < 1 && (
+          <div className="empty-cart">
+            <AiOutlineShopping size={150} />
+            <h3>Your shopping bag is empty</h3>
+            <Link href="/">
+              <button
+                type="button"
+                onClick={() => setShowCart(false)}
+                className="btn"
+              >
+                Continue Shopping
+              </button>
+            </Link>
+          </div>
+        )}
+        <div className="product-container">
           {cartItems.length >= 1 && cartItems.map((item) => (
             <div className="product" key={item._id}>
               <img src={urlFor(item?.image[0])} className="cart-product-image" />
@@ -70,17 +76,17 @@ const Cart = () => {
                 </div>
                 <div className="flex bottom">
                   <div>
-                  <p className="quantity-desc">
-                    <span className="minus" onClick= 
-                    {() => toggleCartItemQuanitity(item._id, 'dec') }
-                    >
-                    <AiOutlineMinus />
-                    </span>
-                    <span className="num" onClick="">{item.quantity}</span>
-                    <span className="plus" onClick=
-                    {() => toggleCartItemQuanitity(item._id, 'inc') }
-                    ><AiOutlinePlus /></span>
-                  </p>
+                    <p className="quantity-desc">
+                      <span className="minus" onClick=
+                        {() => toggleCartItemQuanitity(item._id, 'dec')}
+                      >
+                        <AiOutlineMinus />
+                      </span>
+                      <span className="num" onClick="">{item.quantity}</span>
+                      <span className="plus" onClick=
+                        {() => toggleCartItemQuanitity(item._id, 'inc')}
+                      ><AiOutlinePlus /></span>
+                    </p>
                   </div>
                   <button
                     type="button"
@@ -109,7 +115,7 @@ const Cart = () => {
           </div>
         )}
       </div>
-      </div>
+    </div>
   )
 }
 
