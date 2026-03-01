@@ -6,6 +6,7 @@ import { StateContext } from '@/context/StateContext';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { initMixpanel, trackEvent } from '../lib/mixpanel';
+import { AuthProvider } from "../context/AuthContext";
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -36,7 +37,9 @@ function MyApp({ Component, pageProps }) {
     <StateContext>
       <Layout>
         <Toaster />
-        <Component {...pageProps} />
+         <AuthProvider>
+          <Component {...pageProps} />
+        </AuthProvider>
       </Layout>
     </StateContext>
   )
