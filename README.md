@@ -14,7 +14,7 @@ The system uses **semantic search with embeddings and FAISS vector similarity** 
 # 🚀 Live Demo
 
 Frontend:  
-👉 [(https://shopify-mart.onrender.com/)
+👉 https://shopify-mart.onrender.com/
 
 
 ---
