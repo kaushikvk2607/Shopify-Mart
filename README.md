@@ -14,10 +14,8 @@ The system uses **semantic search with embeddings and FAISS vector similarity** 
 # 🚀 Live Demo
 
 Frontend:  
-👉 https://shopify-mart-five.vercel.app/
+👉 [(https://shopify-mart.onrender.com/)
 
-GitHub Repository:  
-👉 https://github.com/kaushikvk2607/shopify-mart
 
 ---
 
@@ -325,16 +323,6 @@ Solution: Separated chatbot as **independent microservice**.
 - Implement caching layer for embeddings
 - Integrate payment gateway
 - Add user review system
-
----
-
-# 👨‍💻 Author
-
-**Vikas Kaushik**  
-Computer Science Undergraduate – IIIT Bhopal
-
-GitHub:  
-https://github.com/kaushikvk2607
 
 ---
 
